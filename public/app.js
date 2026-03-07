@@ -1177,4 +1177,3 @@ window.addEventListener('DOMContentLoaded', () => {
   startShardTypewriter();
   loadPrices();
 });
-
