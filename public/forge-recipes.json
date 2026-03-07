@@ -1,0 +1,51 @@
+[
+  {
+    "name": "Refined Mithril",
+    "output": "REFINED_MITHRIL",
+    "inputs": [
+      { "productId": "ENCHANTED_MITHRIL", "qty": 160, "label": "Enchanted Mithril" }
+    ],
+    "hours": 6,
+    "hotm": 2
+  },
+  {
+    "name": "Refined Titanium",
+    "output": "REFINED_TITANIUM",
+    "inputs": [
+      { "productId": "ENCHANTED_TITANIUM", "qty": 16, "label": "Enchanted Titanium" }
+    ],
+    "hours": 12,
+    "hotm": 2
+  },
+  {
+    "name": "Gemstone Mixture",
+    "output": "GEMSTONE_MIXTURE",
+    "inputs": [
+      { "productId": "FINE_JADE_GEM", "qty": 4, "label": "Fine Jade" },
+      { "productId": "FINE_AMBER_GEM", "qty": 4, "label": "Fine Amber" },
+      { "productId": "FINE_AMETHYST_GEM", "qty": 4, "label": "Fine Amethyst" },
+      { "productId": "FINE_SAPPHIRE_GEM", "qty": 4, "label": "Fine Sapphire" },
+      { "productId": "SLUDGE_JUICE", "qty": 320, "label": "Sludge Juice" }
+    ],
+    "hours": 4,
+    "hotm": 4
+  },
+  {
+    "name": "Refined Tungsten",
+    "output": "REFINED_TUNGSTEN",
+    "inputs": [
+      { "productId": "ENCHANTED_TUNGSTEN", "qty": 160, "label": "Enchanted Tungsten" }
+    ],
+    "hours": 6,
+    "hotm": 7
+  },
+  {
+    "name": "Refined Umber",
+    "output": "REFINED_UMBER",
+    "inputs": [
+      { "productId": "ENCHANTED_UMBER", "qty": 160, "label": "Enchanted Umber" }
+    ],
+    "hours": 1,
+    "hotm": 7
+  }
+]

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hypixel Gemstone Flips</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="container">
+    <header class="hero">
+      <div class="hero-head">
+        <div>
+          <h1>Forge Fountain</h1>
+          <p class="hero-subtitle">Professional flip analytics for 1x Perfect gemstone production.</p>
+        </div>
+        <div class="hero-controls">
+          <button id="refresh-btn" type="button">Refresh Data</button>
+          <button id="theme-toggle" type="button">Dark Glass: On</button>
+          <label for="input-price-mode">Input Mode</label>
+          <select id="input-price-mode">
+            <option value="instabuy" selected>Insta-Buy (Fast)</option>
+            <option value="buyorder">Buy-Order (Cheaper)</option>
+          </select>
+        </div>
+      </div>
+      <div class="hero-grid">
+        <article class="hero-card hero-card-wide">
+          <h3>Live Session</h3>
+          <p id="status" aria-live="polite">Waiting for first refresh...</p>
+          <p id="updated-at" class="status-meta">Last updated: --</p>
+        </article>
+        <article class="hero-card">
+          <h3>Data Scope</h3>
+          <ul class="hero-list">
+            <li>Gemstones: Topaz, Sapphire, Amethyst</li>
+            <li>Forge rows include HOTM requirements</li>
+            <li>Craft mode supports optional middle-crafting</li>
+          </ul>
+        </article>
+        <article class="hero-card">
+          <h3>Method Notes</h3>
+          <ul class="hero-list">
+            <li>Inputs priced from selected market mode</li>
+            <li>Outputs use sell-offer pricing model</li>
+            <li>Sapphire and Amethyst include required key items</li>
+          </ul>
+        </article>
+      </div>
+    </header>
+
+    <section class="card">
+      <h2>Profit Table</h2>
+      <div class="tabs">
+        <button id="tab-forge" class="tab-btn active" type="button">Forge Flips</button>
+        <button id="tab-craft" class="tab-btn" type="button">Craft Flips</button>
+        <button id="tab-shard" class="tab-btn" type="button">Shard Fusions</button>
+      </div>
+
+      <div id="forge-panel">
+        <table id="forge-table">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Category</th>
+              <th>Inputs (Buy Orders)</th>
+              <th>Extra Input</th>
+              <th>Net Input Cost</th>
+              <th>Output (Sell Offer)</th>
+              <th>Profit</th>
+              <th>Profit/h</th>
+              <th>Forge Time</th>
+              <th>HOTM</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div id="craft-panel" class="hidden">
+        <div class="craft-controls">
+          <label for="craft-limit">Show</label>
+          <select id="craft-limit">
+            <option value="25" selected>Top 25</option>
+            <option value="50">Top 50</option>
+            <option value="100">Top 100</option>
+          </select>
+          <label class="check-label">
+            <input id="hide-gem-crafts" type="checkbox" />
+            Hide Gemstone Crafts
+          </label>
+          <label class="check-label">
+            <input id="allow-middle-craft" type="checkbox" />
+            Allow Middle Crafting
+          </label>
+        </div>
+        <table id="craft-table">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Inputs (Buy Orders)</th>
+              <th>Input Cost</th>
+              <th>Output (Sell Offer)</th>
+              <th>Profit</th>
+              <th>Margin %</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div id="shard-panel" class="hidden">
+        <div class="shard-console">
+          <span class="console-label">Fusion Console</span>
+          <p id="shard-typewriter" class="typewriter-text"></p>
+        </div>
+        <div id="shard-cards" class="shard-cards"></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Quick Breakdown</h2>
+      <div id="summary-cards" class="summary-cards"></div>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
