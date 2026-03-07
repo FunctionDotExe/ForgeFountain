@@ -1,8 +1,28 @@
-# Hypixel Bazaar Gemstones Viewer
+# ForgeFountain
 
-Forge and craft flip dashboard for Hypixel market data.
+Welcome to **ForgeFountain**, your slightly chaotic, highly profitable Hypixel flip command center.
 
-## Local setup
+Think of it as a beacon for your coins:
+- Forge flips
+- Craft flips
+- Shard fusion ideas
+- Live-ish market math without spreadsheet pain
+
+## What This Is
+
+`ForgeFountain` tracks Hypixel Bazaar and recipe data so you can spot profitable forge/craft opportunities fast.
+
+If you like numbers, profit, and pretending you're an economist in full enchanted armor, you are home.
+
+## Play Online (No Download Needed)
+
+Use ForgeFountain directly in your browser:
+
+- `https://functiondotexe.github.io/ForgeFountain/`
+
+No install, no setup, no mods folder required.
+
+## Local Setup (Dev Only)
 
 1. Install dependencies:
    ```bash
@@ -12,16 +32,28 @@ Forge and craft flip dashboard for Hypixel market data.
    ```bash
    npm start
    ```
-3. Open `http://localhost:3000`.
+3. Open locally:
+   `http://localhost:3000`
 
-## GitHub Pages deployment
+## GitHub Pages (Skyblock Cloud Edition)
 
-- A workflow is included at `.github/workflows/deploy-pages.yml`.
-- It deploys only the `public/` directory.
-- `server.js`, environment variables, and local config files are not published to `*.github.io`.
-- `public/.nojekyll` is included to avoid Jekyll processing.
+Deployment workflow lives at:
+- `.github/workflows/deploy-pages.yml`
 
-## Security notes
+Important details:
+- Only `public/` is deployed to GitHub Pages.
+- Backend files like `server.js` are **not** published to `*.github.io`.
+- Local env/config files are not published.
+- `public/.nojekyll` is included so static files render correctly.
 
-- Keep secrets only in environment variables (`HYPIXEL_KEY`), never in frontend files.
-- `.gitignore` blocks `.env*`, `node_modules`, and editor/system artifacts from accidental commit.
+## Security (No Coin-Leaking Enchant)
+
+- Never hardcode secrets in frontend files.
+- Keep keys in environment variables only (`HYPIXEL_KEY`).
+- `.gitignore` blocks `.env*`, `node_modules`, and editor/system junk.
+
+## Name Change
+
+Project name is now **ForgeFountain**.
+
+If anyone asks why: because "Hypixel Bazaar Gemstones Viewer" sounds like a tax form.
