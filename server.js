@@ -5,6 +5,11 @@ const fs = require('fs/promises');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const ALLOWED_ORIGINS = new Set([
+  'https://functiondotexe.github.io',
+  'http://localhost:3000',
+  'http://127.0.0.1:3000'
+]);
 const ATTRIBUTES_MIRROR_URL = 'https://r.jina.ai/http://wiki.hypixel.net/Attributes';
 const FORGE_MIRROR_RAW_URL = 'https://r.jina.ai/http://wiki.hypixel.net/index.php?title=The_Forge&action=raw';
 const FORGE_MIRROR_PAGE_URL = 'https://r.jina.ai/http://wiki.hypixel.net/The_Forge';
@@ -21,6 +26,20 @@ const IMAGE_PROXY_ALLOWLIST = [
 
 // serve static files from public
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use((req, res, next) => {
+  const origin = String(req.headers.origin || '');
+  if (ALLOWED_ORIGINS.has(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Vary', 'Origin');
+  }
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(204);
+  }
+  next();
+});
 
 const HYPIXEL_KEY = process.env.HYPIXEL_KEY;
 const HYPIXEL_API_URL = 'https://api.hypixel.net/v2/skyblock/bazaar';

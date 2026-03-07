@@ -52,6 +52,17 @@ const MATERIAL_ALIASES = {
   lily_pad: 'waterlily'
 };
 const IS_GITHUB_PAGES = window.location.hostname.endsWith('.github.io');
+const REMOTE_API_BASE = 'https://forgefountain-api.onrender.com';
+
+function buildApiCandidates(path, fallbacks = []) {
+  const normalized = path.startsWith('/') ? path : `/${path}`;
+  const urls = [];
+  if (IS_GITHUB_PAGES) {
+    urls.push(`${REMOTE_API_BASE}${normalized}`);
+  }
+  urls.push(normalized);
+  return [...urls, ...fallbacks];
+}
 
 const state = {
   activeTab: 'forge',
@@ -344,13 +355,13 @@ function sanitizeForgeConfig(raw) {
 
 async function fetchForgeConfigs() {
   try {
-    const resp = await fetch('/api/forge-recipes');
-    const contentType = resp.headers.get('content-type') || '';
-    if (resp.ok && contentType.includes('application/json')) {
-      const payload = await resp.json();
+    const payload = await fetchJsonFromAny(buildApiCandidates('/api/forge-recipes'));
+    if (payload) {
       const recipes = Array.isArray(payload?.recipes) ? payload.recipes : [];
       const parsed = recipes.map(sanitizeForgeConfig).filter(Boolean);
-      if (parsed.length) return parsed;
+      if (parsed.length) {
+        return parsed;
+      }
     }
   } catch {
     // fallback below
@@ -861,15 +872,15 @@ async function fetchJsonFromAny(urls) {
 async function fetchItemMap(outputIds) {
   if (!outputIds.length) return {};
   const requested = new Set(outputIds);
-  const fetchItems = async (url) => fetchJsonFromAny([url]);
+  const fetchItems = async (urls) => fetchJsonFromAny(urls);
 
   const useAllItems = outputIds.length > 160;
   const directItemsUrl = 'https://api.hypixel.net/resources/skyblock/items';
   let items = await fetchItems(useAllItems
-    ? '/api/items'
-    : `/api/items?ids=${encodeURIComponent(outputIds.join(','))}`);
+    ? buildApiCandidates('/api/items')
+    : buildApiCandidates(`/api/items?ids=${encodeURIComponent(outputIds.join(','))}`));
   if (!items) {
-    const full = await fetchItems(directItemsUrl);
+    const full = await fetchItems([directItemsUrl]);
     if (Array.isArray(full?.items)) {
       items = useAllItems
         ? full.items
@@ -881,7 +892,7 @@ async function fetchItemMap(outputIds) {
   let map = buildIconMap(items);
   const missing = outputIds.filter((id) => !map[id]);
   if (missing.length > 0 && !useAllItems) {
-    const allItems = await fetchItems('/api/items');
+    const allItems = await fetchItems(buildApiCandidates('/api/items'));
     if (Array.isArray(allItems)) {
       const filtered = allItems.filter((item) => requested.has(item.id));
       map = buildIconMap(filtered);
@@ -1063,8 +1074,8 @@ async function loadPrices() {
   try {
     status.textContent = 'Loading live bazaar prices...';
     const [bazaarData, attrPayload, forgeResp] = await Promise.all([
-      fetchJsonFromAny(['/api/prices', 'https://api.hypixel.net/v2/skyblock/bazaar']),
-      fetchJsonFromAny(['/api/attributes', '/attributes-shards.json']),
+      fetchJsonFromAny(buildApiCandidates('/api/prices', ['https://api.hypixel.net/v2/skyblock/bazaar'])),
+      fetchJsonFromAny(buildApiCandidates('/api/attributes', ['/attributes-shards.json'])),
       fetchForgeConfigs()
     ]);
     if (!bazaarData) {
