@@ -212,12 +212,19 @@ function buildAttributeIconMap(attributeShards) {
   const map = {};
   (attributeShards || []).forEach((meta) => {
     if (meta?.shardId && meta?.imageUrl) {
+      const safeImageUrl = String(meta.imageUrl).replace(/^http:\/\//i, 'https://');
       map[meta.shardId] = IS_GITHUB_PAGES
-        ? meta.imageUrl
-        : `/api/icon-proxy?url=${encodeURIComponent(meta.imageUrl)}`;
+        ? safeImageUrl
+        : `/api/icon-proxy?url=${encodeURIComponent(safeImageUrl)}`;
     }
   });
   return map;
+}
+
+function normalizeAttributeShards(payload) {
+  if (Array.isArray(payload)) return payload;
+  if (Array.isArray(payload?.shards)) return payload.shards;
+  return [];
 }
 
 function getItemCell(name, id) {
@@ -1057,7 +1064,7 @@ async function loadPrices() {
     status.textContent = 'Loading live bazaar prices...';
     const [bazaarData, attrPayload, forgeResp] = await Promise.all([
       fetchJsonFromAny(['/api/prices', 'https://api.hypixel.net/v2/skyblock/bazaar']),
-      fetchJsonFromAny(['/api/attributes']),
+      fetchJsonFromAny(['/api/attributes', '/attributes-shards.json']),
       fetchForgeConfigs()
     ]);
     if (!bazaarData) {
@@ -1068,7 +1075,7 @@ async function loadPrices() {
       throw new Error('Bazaar data payload is invalid.');
     }
     state.lastPayload = payload;
-    state.attributeShards = Array.isArray(attrPayload?.shards) ? attrPayload.shards : [];
+    state.attributeShards = normalizeAttributeShards(attrPayload);
     state.forgeConfigs = Array.isArray(forgeResp) ? forgeResp : [];
     state.forgeRows = buildForgeRows(payload, state.forgeConfigs);
     state.allCraftRows = buildCraftRows(payload);
