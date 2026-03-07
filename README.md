@@ -22,36 +22,6 @@ Use ForgeFountain directly in your browser:
 
 No install, no setup, no mods folder required.
 
-## Local Setup (Dev Only)
-
-1. Install dependencies:
-   ```bash
-   npm install
-   ```
-2. Start server:
-   ```bash
-   npm start
-   ```
-3. Open locally:
-   `http://localhost:3000`
-
-## GitHub Pages (Skyblock Cloud Edition)
-
-Deployment workflow lives at:
-- `.github/workflows/deploy-pages.yml`
-
-Important details:
-- Only `public/` is deployed to GitHub Pages.
-- Backend files like `server.js` are **not** published to `*.github.io`.
-- Local env/config files are not published.
-- `public/.nojekyll` is included so static files render correctly.
-
-## Security (No Coin-Leaking Enchant)
-
-- Never hardcode secrets in frontend files.
-- Keep keys in environment variables only (`HYPIXEL_KEY`).
-- `.gitignore` blocks `.env*`, `node_modules`, and editor/system junk.
-
 ## Name Change
 
 Project name is now **ForgeFountain**.
