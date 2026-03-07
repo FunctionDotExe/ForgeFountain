@@ -53,15 +53,23 @@ const MATERIAL_ALIASES = {
 };
 const IS_GITHUB_PAGES = window.location.hostname.endsWith('.github.io');
 const REMOTE_API_BASE = 'https://forgefountain-api.onrender.com';
+const GH_REPO_BASE = (() => {
+  if (!IS_GITHUB_PAGES) return '';
+  const parts = window.location.pathname.split('/').filter(Boolean);
+  return parts.length ? `/${parts[0]}` : '';
+})();
+
+function staticAssetPath(name) {
+  const clean = String(name || '').replace(/^\/+/, '');
+  return `${GH_REPO_BASE}/${clean}`;
+}
 
 function buildApiCandidates(path, fallbacks = []) {
   const normalized = path.startsWith('/') ? path : `/${path}`;
-  const urls = [];
   if (IS_GITHUB_PAGES) {
-    urls.push(`${REMOTE_API_BASE}${normalized}`);
+    return [`${REMOTE_API_BASE}${normalized}`, ...fallbacks];
   }
-  urls.push(normalized);
-  return [...urls, ...fallbacks];
+  return [normalized, ...fallbacks];
 }
 
 const state = {
@@ -368,7 +376,7 @@ async function fetchForgeConfigs() {
   }
 
   try {
-    const localResp = await fetch('/forge-recipes.json');
+    const localResp = await fetch(staticAssetPath('forge-recipes.json'));
     const localType = localResp.headers.get('content-type') || '';
     if (!localResp.ok || !localType.includes('application/json')) return [];
     const localPayload = await localResp.json();
@@ -1075,7 +1083,7 @@ async function loadPrices() {
     status.textContent = 'Loading live bazaar prices...';
     const [bazaarData, attrPayload, forgeResp] = await Promise.all([
       fetchJsonFromAny(buildApiCandidates('/api/prices', ['https://api.hypixel.net/v2/skyblock/bazaar'])),
-      fetchJsonFromAny(buildApiCandidates('/api/attributes', ['/attributes-shards.json'])),
+      fetchJsonFromAny(buildApiCandidates('/api/attributes', [staticAssetPath('attributes-shards.json')])),
       fetchForgeConfigs()
     ]);
     if (!bazaarData) {
